@@ -1,0 +1,169 @@
+def build = currentBuild.previousSuccessfulBuild
+
+        if (build != null) {
+             echo "Previous Successful Build Number: ${build.number}"
+        } else {
+            echo "No previous successful build found."
+        }
+        def old_tag = "authen-jen-v1.${build.number}"
+        def new_tag = "authen-jen-v1.${currentBuild.number}"
+        echo "Last Worked Image: emindsregistry.ddnsfree.com/vc-edge:${old_tag}"
+        echo "Current Image: emindsregistry.ddnsfree.com/vc-edge:${new_tag}" 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+s/RRR/emindsregistry.ddnsfree.com/g' /home/worker/jenkins/workspace/edge/edge-authentication/authentication.yaml"
+
+
+'https://github.com/PGuardians/em-edge-authentication.git'
+
+
+'https://github.com/PGuardians/em-dt-devops.git'
+
+dockerfiles, kube-yaml, env, 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+UI:
+
+Map , location, object, sensor, update value and click update, run, will blink and also have the causal graph when click the drop down
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+6 microservices:
+
+1.Authentication.
+2.Authorization.
+3.Communication.
+4.Frontend.
+5.Gateway.
+6.Middleware.
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Namespace:
+
+	twin
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Registry/repo:tag
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+sftp sftpserver@192.168.30.69 
+
+lpwd                       (local present working directory)
+
+get /home/sftpserver/local/file.csv .
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Flags and Options in s3fs:
+
+	Flag					Meaning
+-o passwd_file=FILE			Specifies the credentials file
+-o url=URL				Custom S3 provider (e.g., Wasabi, DigitalOcean)	    
+-o use_path_request_style		Needed for some providers (like Wasabi)		   (required for Wasabi or MinIO) (AWS uses virtual-hosted style)
+-o allow_other				Let other users access the mount (needs /etc/fuse.conf config)
+
+	-> only the user who mounted the bucket can access it
+
+	sudo nano /etc/fuse.conf
+	# Uncomment or add:
+	user_allow_other
+
+	EX: s3fs my-bucket /mnt/s3 -o passwd_file=~/.passwd-s3fs -o allow_other
+
+	-> Useful when multiple users or applications (e.g., nginx, apache) need access.
+
+
+-o uid=1000,gid=1000			Set owner of files in the mounted folder
+
+	-> Prevents permission issues by ensuring files appear as owned by your use
+
+-o use_cache=/tmp			Uses local cache to speed up file operations
+
+	-> Creates a local cache to speed up repeated file reads
+	-> When we read a file from S3, it stores a copy temporarily on your disk.
+
+-o multireq_max=N			Control number of parallel requests
+
+	-> Defines how many parallel requests can be sent to S3.
+	-> More = faster transfers (up to a point).
+	-> Helps when uploading/downloading many files at once.
+
+-o nonempty				Mount even if target directory is not empty
+
+	-> Normally, s3fs will refuse to mount to a directory that already has files in it
+	-> This flag says: "It's okay if the target directory has some files."
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+4 (4-nodes-frontend)     30101
+8                        30102
+12                       30103
+mcs                      30104
+Causal App [Frontend]    30105
+equinor                  30106
+fryer         		 30107
+twinarcpro    		 30108
+
+container pirt - 3000 (for every front-end containers)
+namespace  = twin-sim
+______________
+
+30201  for api's
+30202..
+
+
+-- ---------
+
+
+steps:
+
+in 7 aresas , have to change =  4-Nodes Frontend 
+in two areas , have to change = twin-sim
+in three areas, have to change = 3000
+in one area , have to change = 30101...
+
+have to comment the "ENV" part
+
+-----------------------------------------
+
+10.0.0.103      8me$$y01T!me25*  - twinarcworker2   (eminds)
+mkdir ~/twin-sim
+
+
+-----------------------------------------
+
+FROM emindsguardians/ub20-node18:v2
+WORKDIR /frontend
+ADD 4causalfrontend/ /frontend
+RUN npm install --force
+
+#CMD ["npm", "start"]
+
+-----------------------------------------
+
+emindsguardians/twin-sim                4nodes 
+
+-----------------------------------------
+
+from deployments path, copy that "8causalfrontend" folder to "source" folder.  "cp 8causalfrontend/ /home/eminds/twin-sim/source"
+
+then in Docker file, edit that name to "8causalfrontend"
+
+then build the image with the repo name "emindsguardians/twin-sim:8nodes"
+cmd:
+   docker build -t emindsguardians/twin-sim:8nodes .
+
+after this run,
+   docker push emindsguardians/twin-sim:8nodes 
+
+after this, change the image name in the "8nodesfrontend.yaml" file as "emindsguardians/twin-sim:8nodes"
+
+after this run, 
+    kubectl apply -f 8nodesfrontend.yaml
+
+-----------------------------------------
