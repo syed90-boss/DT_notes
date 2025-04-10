@@ -1,0 +1,12 @@
+changes:
+
+ first sh   = after "dockerfile" add "twin-sim" and "only frontend"
+
+ second sh  = after "kube-yml"  add "twin-sim"
+
+ second sh  = after "evn"  add "twin-sim"
+
+
+------------
+
+in 6 areas have to change as "yaml"

@@ -1,0 +1,21 @@
+making kubectl accessed by any host:
+
+steps:
+
+sudo cat  /etc/kubernetes/admin.conf   = it will show some keys and contents
+
+sudo kubectl --kubeconfig   /etc/kubernetes/admin.conf get no        (customized path)
+NAME            STATUS   ROLES           AGE     VERSION
+deploy-2        Ready    <none>          5m35s   v1.29.15
+testmachines1   Ready    control-plane   26m     v1.29.15
+
+mkdir  ~/.kube
+
+sudo chown -R $USER:$USER ~/.kube/conf
+
+sudo cp /etc/kubernetes/admin.conf ~/.kube/config  (default path)
+
+syed@testmachines1:~/twin$ kubectl get no
+NAME            STATUS   ROLES           AGE     VERSION
+deploy-2        Ready    <none>          7m40s   v1.29.15
+testmachines1   Ready    control-plane   28m     v1.29.15

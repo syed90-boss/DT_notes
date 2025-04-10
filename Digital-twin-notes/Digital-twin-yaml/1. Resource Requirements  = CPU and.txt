@@ -1,0 +1,88 @@
+1. Resource Requirements  = CPU and memory 
+			    Which nodes have enough free resources to handle it
+
+2. Node Health	  = skips unhealthy nodes.
+		            Not ready
+			    Down
+ 			    Disk full
+
+3. Taints and Tolerations   =  Don’t schedule pods here unless they have a matching toleration!"
+
+   Example:
+		kubectl taint nodes node-2 dedicated=dev:NoSchedule
+		
+		.yaml:
+		apiVersion: v1
+kind: Pod
+metadata:
+  name: dev-pod
+spec:
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "dev"
+    effect: "NoSchedule"
+  containers:
+  - name: nginx
+    image: nginx
+
+ This Pod is saying:
+ I’m okay with the taint on node-2.
+ So Scheduler can place it there.
+
+		Pod without Toleration:
+			Pod says nothing about the taint.
+			Scheduler will not place it on node-2.
+
+
+4. Node Affinity / Anti-Affinity (if set)   =  Run near other pods (affinity)
+					       Don’t run with certain pods (anti-affinity)
+
+   Example:
+
+	You have a Kubernetes cluster with 3 worker nodes:
+
+		node1: label = disk=ssd
+
+		node2: label = disk=hdd
+
+		node3: label = disk=ssd
+
+	You have two applications:
+
+	App A: A database (like MongoDB) that needs fast disk
+
+	App B: A cache (like Redis) that should not run on the same node as another Redis pod (to spread load)
+
+	Node Affinity Example:
+		
+		App A wants to run only on nodes with SSD.
+
+		App A will only be scheduled on node1 or node3.
+	
+	Pod Anti-Affinity Example (for App B):
+	
+		App B (Redis) should not run on the same node as another Redis pod (to spread it out).
+		
+		Kubernetes will not schedule another Redis pod on the same node where one Redis pod is already running.
+
+
+
+5. Pod Topology Spread (for High Availability)    =  spread your pods across zones or nodes to avoid overloading one node.
+
+	You are running a frontend web app with 6 replicas.
+
+	Your Kubernetes cluster has 3 nodes:
+
+			node1
+
+			node2
+
+			node3
+
+	By default, Kubernetes might schedule all 6 pods on node1 if it has enough resources — but if node1 goes down, 
+	all your app pods go down too 	
+
+6. Labels and Selectors		
+
+----------------------------------------------------------------------		  =  
