@@ -53,6 +53,8 @@ retry(count: 2){
         sh "docker push ${IMAGE}"
     }
     // stage("Kubectl Apply"){
+           withCredentials([file(credentialsId: '103twin-simk8-kubeconfig', variable: 'config')]) {
+           sh"kubectl --kubeconfig $config get po -n twin-sim"
     //     sh "kubectl apply -f /home/eminds/jenkins/workspace/dt/dt-8nodes-frontend/frontend.yaml"
     // }
    

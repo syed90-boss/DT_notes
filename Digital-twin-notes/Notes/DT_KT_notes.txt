@@ -105,9 +105,9 @@ Flags and Options in s3fs:
 12                       30103
 mcs                      30104
 Causal App [Frontend]    30105
-equinor                  30106
-fryer         		 30107
-twinarcpro    		 30108
+equinor                  30107
+fryer         		 30106
+twinarcpro    		 30034	
 
 container pirt - 3000 (for every front-end containers)
 namespace  = twin-sim
@@ -238,6 +238,14 @@ digitaltwin
 	
 
 17 = changes in pipeline
+
+--------------------------------------------------------------------------------------------------------------
+
+commands:
+
+for fryer - npm run dev
+
+
 
 
 
